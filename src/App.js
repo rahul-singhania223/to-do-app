@@ -10,7 +10,7 @@ import Item from './Item';
 
 function App(props) {
 
-    const [dark, setDark] = useState(true);
+    const [dark, setDark] = useState(false);
     const [tasks, setTasks] = useState([{id: "0", task: "singhania"}, {id: "1", task: "rahul"}]);
     const [input, setInput] = useState("");
     const [activeTasks, setActiveTasks] = useState([]);
@@ -72,7 +72,12 @@ function App(props) {
        completedTasks.map((item) => {
            let id = item.getAttribute("id");
            let index = tasks.findIndex(task => task.id === id);
-           newTasks.splice(index, 1);           
+           newTasks.splice(index, 1);
+           
+           
+           return (
+               ""
+           )
        })
 
        setTasks(newTasks);
