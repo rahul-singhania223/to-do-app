@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Josefin Sans', sans-serif;    
+}
+
+.light-container {
+    box-shadow: 0 0 2px 0 hsl(233, 11%, 84%);
+}
+
+.active-filter {
+    color: hsl(220, 98%, 61%);
+}
+
+.checkbox {
+    width: 25px;
+    height: 25px;
+    border: solid 1px lightgray;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+}
+
+.light {
+    border-bottom: solid 1px hsl(233, 11%, 84%) !important;
+}
+
+.light span {
+    color: hsl(235, 19%, 35%) !important;
+}
+
+.dark span {
+    color: hsl(234, 39%, 85%) !important;
+}
+
+
+
+.checked .checkbox {
+    background: linear-gradient(150deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+    border: none;
+}
+
+.checked .light-text {
+    color: hsl(233, 11%, 84%) !important;
+}
+
+.checked .dark-text {
+    color: hsl(233, 14%, 35%) !important;
+}
+
+.checked span {
+    text-decoration: line-through;
+}
+
+.checked img {
+    display: block !important;
+}
