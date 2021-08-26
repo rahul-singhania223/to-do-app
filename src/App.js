@@ -12,7 +12,6 @@ import Item from './Item';
 
 function App(props) {
     
-    let taskItems = localStorage.getItem("tasks");    
     const [dark, setDark] = useState(false);
     const [tasks, setTasks] = useState([]);
     const [input, setInput] = useState("");
