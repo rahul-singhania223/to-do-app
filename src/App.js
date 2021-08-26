@@ -2,25 +2,35 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import icon_sun from "./assets/icon-sun.svg";
 import icon_moon from "./assets/icon-moon.svg";
-import bg_dark from "./assets/bg-desktop-dark.jpg";
-import bg_light from "./assets/bg-desktop-light.jpg";
+import bg_desktop_dark from "./assets/bg-desktop-dark.jpg";
+import bg_desktop_light from "./assets/bg-desktop-light.jpg";
+import bg_mobile_dark from "./assets/bg-mobile-dark.jpg";
+import bg_mobile_light from "./assets/bg-mobile-light.jpg";
 import Item from './Item';
 
 
 
 function App(props) {
-
+    
+    let taskItems = localStorage.getItem("tasks");    
     const [dark, setDark] = useState(false);
-    const [tasks, setTasks] = useState([{id: "0", task: "singhania"}, {id: "1", task: "rahul"}]);
+    const [tasks, setTasks] = useState([]);
     const [input, setInput] = useState("");
     const [activeTasks, setActiveTasks] = useState([]);
     const [completedTasks, setCompletedTasks] = useState([]);
     const [filter, setFilter] = useState("All");
 
+    const desktopBakcground = {
+        backgroundImage:  dark? `url(${bg_desktop_dark})`: `url(${bg_desktop_light})`
+    }
+
+    const mobileBackground = {
+        backgroundImage: dark? `url(${bg_mobile_dark})` : `url(${bg_mobile_light})`
+    }
 
     const changeMode = () => {
         setDark(!dark);
-    }
+    }    
 
     const changeFilter = (e) => {
         setFilter(e.target.innerHTML);
@@ -69,16 +79,16 @@ function App(props) {
 
     const clearCompleted = () => {
         let newTasks = tasks;
-       completedTasks.map((item) => {
-           let id = item.getAttribute("id");
-           let index = tasks.findIndex(task => task.id === id);
-           newTasks.splice(index, 1);
-           
-           
-           return (
-               ""
-           )
-       })
+        completedTasks.map((item) => {
+            let id = item.getAttribute("id");
+            let index = tasks.findIndex(task => task.id === id);
+            newTasks.splice(index, 1);
+            
+            
+            return (
+                ""
+            )
+        })
 
        setTasks(newTasks);
        setCompletedTasks([]);
@@ -89,9 +99,12 @@ function App(props) {
         setActiveTasks(activeTasks);
     }, [tasks])
 
+   
+    
+        
     return (
         <Container style={{backgroundColor: dark ? "hsl(235, 21%, 11%)" : "hsl(236, 33%, 92%)"}}>
-            <BackgroundContainer style={{backgroundImage: dark? `url(${bg_dark})` : `url(${bg_light})`}} />
+            <BackgroundContainer style={window.innerWidth>500? desktopBakcground : mobileBackground} />
 
             <MainContainer>
                 <HeaderContainer>
@@ -113,16 +126,16 @@ function App(props) {
 
                     <ListContainer style={{backgroundColor: dark ? "hsl(235, 24%, 19%)" : "hsl(0, 0%, 98%)"}}>
                         
-                        <div style={{display: filter==="All"? "block" : "none"}}>
+                        <ItemsContainer style={{display: filter==="All"? "block" : "none"}}>
                             {   
                                 tasks.map((item, index) => (
                                     <Item key={index} id={item.id} handleCheck={handleCheck} class={dark? "dark" : "light"} task={item.task} />
                                 ))
                                 
                             }
-                        </div>
+                        </ItemsContainer>
 
-                        <div >
+                        <ItemsContainer >
                             {  filter==="Active"?  
                                 activeTasks.map((item) => (
                                     <Item handleCheck={() => {}} class={dark ? "dark" : "light"} task={item.innerHTML} />
@@ -131,9 +144,9 @@ function App(props) {
                                 null
                                 
                             }
-                        </div>
+                        </ItemsContainer>
 
-                        <div >
+                        <ItemsContainer >
                             {  filter==="Completed"?  
                                 completedTasks.map((item) => (
                                     <Item handleCheck={() => {}} class={"checked"} task={item.innerHTML} />
@@ -142,7 +155,7 @@ function App(props) {
                                 null
                                 
                             }
-                        </div>
+                        </ItemsContainer>
 
 
                         
@@ -164,7 +177,7 @@ function App(props) {
                     </FilterContainer>
                 </ShowContainer>
 
-                <MessageContainer style={{backgroundColor: dark ? "hsl(235, 24%, 19%)" : "hsl(0, 0%, 98%)", display: tasks.length===0? "flex" : "none"}} >
+                <MessageContainer style={{backgroundColor: dark ? "hsl(235, 24%, 19%)" : "hsl(0, 0%, 98%)", display: tasks.length===0? "flex" : "none", color: dark? "hsl(234, 39%, 85%)" : "hsl(235, 19%, 35%)"}} >
                     <h2>Your task list is empty.</h2>
                     <span>Please add some tasks</span>
                 </MessageContainer>
@@ -201,7 +214,7 @@ const MainContainer = styled.div`
     }
 
     @media(max-width: 500px) {
-        width: 90%;
+        width: 95%;
     }
 `;
 
@@ -254,11 +267,24 @@ const CreateContainer = styled.div`
             outline: none;
         }
     }
+
+    @media(max-width: 500px) {
+        height: 60px;
+        
+        input {
+            font-size: 1.2rem;
+        }
+    }
 `;
 
 const ListContainer = styled.div`    
     margin-top: 30px;
-    border-radius: 7px;
+    border-radius: 7px;   
+`;
+
+const ItemsContainer = styled.div`
+    max-height: 48vh;
+    overflow-y: scroll;
 `;
 
 const ShowContainer = styled.div`
@@ -276,7 +302,7 @@ const FilterContainer = styled.div`
     display: none;
     
     span {
-        margin: 14px;        
+        margin: 0 14px;        
         font-weight: 700;
         cursor: pointer;
 
@@ -287,6 +313,16 @@ const FilterContainer = styled.div`
 
     @media(max-width: 768px) {
         display: flex;
+    }
+
+    @media(max-width: 500px) {
+        span {
+            font-size: 1rem;
+            margin: 0 24px;
+        }
+
+        padding: 0 20px;
+        
     }
 `;
 
@@ -335,7 +371,7 @@ const BootomContainer = styled.div`
     justify-content: space-between;
     padding: 0 30px;
     height: 60px;
-
+   
     
 
     span {

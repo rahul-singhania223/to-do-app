@@ -8,9 +8,9 @@ function Item(props) {
 
     return (
         <Container onClick={props.handleCheck} className={props.class} >
-            <div className="checkbox">
+            <span className="checkbox">
                 <img style={{display: "none"}} src={icon_check} alt="" />                            
-            </div>
+            </span>
 
             <span id={props.id} className={className}>{props.task}</span>            
         </Container>
@@ -33,9 +33,12 @@ const Container = styled.div`
         color: hsl(234, 39%, 85%);
     }
 
-    :hover {
-        div {
-            border: solid 1px hsl(236, 9%, 61%);
+    
+    @media(max-width: 500px) {
+        padding: 20px;
+
+        span {
+            font-size: 1.2rem;
         }
     }
 `;
